@@ -37,11 +37,11 @@ class Player(pygame.sprite.Sprite):
 
         # x movement
         self.pos.x += self.direction.x * self.speed * dt
-        self.rect.center.x = self.pos.x
+        self.rect.centerx = self.pos.x
 
         #y movement
         self.pos.y += self.direction.y * self.speed * dt
-        self.rect.center.y = self.pos.y
+        self.rect.centery = self.pos.y
 
     def update(self,dt):
         self.input()
