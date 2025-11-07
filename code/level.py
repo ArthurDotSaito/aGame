@@ -1,16 +1,18 @@
 import pygame 
 from settings import *
+from player import Player
 
 class Level:
-	def __init__(self):
+    def __init__(self):
+        self.display_surface = pygame.display.get_surface()
+        self.all_sprites = pygame.sprite.Group()
+        self.player = None
+        self.setup()
 
-		# get the display surface
-		self.display_surface = pygame.display.get_surface()
+    def setup(self):
+        self.player = Player((640, 360), self.all_sprites)
 
-		# sprite groups
-		self.all_sprites = pygame.sprite.Group()
-
-	def run(self,dt):
-		self.display_surface.fill('black')
-		self.all_sprites.draw(self.display_surface)
-		self.all_sprites.update()
+    def run(self,dt):
+        self.display_surface.fill('black')
+        self.all_sprites.draw(self.display_surface)
+        self.all_sprites.update(dt)
