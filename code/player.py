@@ -22,13 +22,20 @@ class Player(pygame.sprite.Sprite):
         #timer
         self.timers = {
             'tool_use': Timer(350, self.use_tool),
-            'tool_switch': Timer(200)
+            'tool_switch': Timer(200),
+            'seed_use': Timer(350, self.use_seed),
+            'seed_switch': Timer(200)
         }
 
         #tooling
         self.tools = ['hoe', 'axe', 'water']
         self.tool_idx = 0
         self.selected_tool = self.tools[self.tool_idx]
+
+        #seeds
+        self.seeds = ['corn', 'tomato']
+        self.seed_idx = 0
+        self.selected_seed = self.seeds[self.seed_idx]
 
     def import_assets(self):
         self.animations = {'up': [], 'down': [], 'left': [], 'right': [],
@@ -69,17 +76,31 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction.x = 0
 
+            #tool use
             if keys[pygame.K_SPACE]:
                 self.timers['tool_use'].activate()
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 
             # change tool
-            if keys[pygame.K_q] and not self.timers['tool_use'].active:
+            if keys[pygame.K_q] and not self.timers['tool_switch'].active:
                 self.timers['tool_switch'].activate()
                 self.tool_idx += 1
                 self.tool_idx = self.tool_idx if self.tool_idx < len(self.tools) else 0
                 self.selected_tool = self.tools[self.tool_idx]
+
+            # seed use
+            if keys[pygame.K_LCTRL]:
+                self.timers['seed_use'].activate()
+                self.direction = pygame.math.Vector2()
+                self.frame_index = 0
+
+            # change seed
+            if keys[pygame.K_e] and not self.timers['seed_switch'].active:
+                self.timers['seed_switch'].activate()
+                self.seed_idx += 1
+                self.seed_idx = self.seed_idx if self.seed_idx < len(self.seeds) else 0
+                self.selected_seed = self.seeds[self.seed_idx]
 
     def get_status(self):
         if self.direction.magnitude() == 0:
@@ -112,4 +133,7 @@ class Player(pygame.sprite.Sprite):
         self.animate(dt)
 
     def use_tool(self):
-        print('use_tool')
+        pass
+
+    def use_seed(self):
+        pass
