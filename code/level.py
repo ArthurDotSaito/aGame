@@ -2,10 +2,9 @@ import pygame
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import General
+from sprites import General, Water, WildFlowers
 from pytmx.util_pygame import load_pygame
-
-
+from utils.support import *
 
 class Level:
     def __init__(self):
@@ -19,8 +18,26 @@ class Level:
         tmx_map_data = load_pygame('data/map.tmx')
 
         # house
-        for x,y,surf in tmx_map_data.get_layer_by_name('HouseFurnitureBottom').tiles():
-            General((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['house bottom'])
+        for layer in ['HouseFloor', 'HouseFurnitureBottom']:
+            for x,y,surf in tmx_map_data.get_layer_by_name(layer).tiles():
+                General((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['house bottom'])
+
+        for layer in ['HouseWalls', 'HouseFurnitureTop']:
+            for x,y,surf in tmx_map_data.get_layer_by_name(layer).tiles():
+                General((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites)
+
+        # Fence
+        for x,y,surf in tmx_map_data.get_layer_by_name('Fence').tiles():
+            General((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites)
+
+        # Water
+        water_frames = import_folder('graphics/water')
+        for x, y, surf in tmx_map_data.get_layer_by_name('Water').tiles():
+            Water((x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites)
+
+        # WildFlower
+        for flower in tmx_map_data.get_layer_by_name('Decoration'):
+            WildFlowers((flower.x, flower.y), flower.image, self.all_sprites)
 
         General(pos = (0,0), surf = pygame.image.load('graphics/world/ground.png'). convert_alpha(), groups = self.all_sprites, z = LAYERS['ground'])
         self.player = Player((640, 360), self.all_sprites)
