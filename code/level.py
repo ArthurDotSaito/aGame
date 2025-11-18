@@ -40,12 +40,20 @@ class Level:
         for flower in tmx_map_data.get_layer_by_name('Decoration'):
             WildFlowers((flower.x, flower.y), flower.image, [self.all_sprites, self.collision_sprites])
 
+        #Collision tiles
+        for x, y, surf in tmx_map_data.get_layer_by_name('Collision').tiles():
+            General((x * TILE_SIZE,y * TILE_SIZE), pygame.Surface((TILE_SIZE, TILE_SIZE)), self.collision_sprites)
+
         # Tree
         for tree in tmx_map_data.get_layer_by_name('Trees'):
             Tree((tree.x, tree.y), tree.image, [self.all_sprites, self.collision_sprites], tree.name)
 
         General(pos = (0,0), surf = pygame.image.load('graphics/world/ground.png'). convert_alpha(), groups = self.all_sprites, z = LAYERS['ground'])
-        self.player = Player((640, 360), self.all_sprites, self.collision_sprites)
+
+        #player spawn
+        for player_obj in tmx_map_data.get_layer_by_name('Player'):
+            if player_obj.name == 'Start':
+                self.player = Player((player_obj.x, player_obj.y), self.all_sprites, self.collision_sprites)
 
     def run(self,dt):
         self.display_surface.fill('black')
