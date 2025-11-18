@@ -7,6 +7,7 @@ class General(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
+        self.hitbox = self.rect.copy().inflate(-self.rect.width * 0.2, -self.rect.height * 0.75)
 
 class Water(General):
     def __init__(self, pos, frames, groups):
@@ -30,6 +31,7 @@ class Water(General):
 class WildFlowers(General):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
+        self.hitbox = self.rect.copy().inflate(-20, -self.rect.height * 0.9)
 
 class Tree(General):
     def __init__(self, pos, surf, groups, name):
