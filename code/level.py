@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import General, Water, WildFlowers
+from sprites import General, Water, WildFlowers, Tree
 from pytmx.util_pygame import load_pygame
 from utils.support import *
 
@@ -38,6 +38,10 @@ class Level:
         # WildFlower
         for flower in tmx_map_data.get_layer_by_name('Decoration'):
             WildFlowers((flower.x, flower.y), flower.image, self.all_sprites)
+
+        # Tree
+        for tree in tmx_map_data.get_layer_by_name('Trees'):
+            Tree((tree.x, tree.y), tree.image, self.all_sprites, tree.name)
 
         General(pos = (0,0), surf = pygame.image.load('graphics/world/ground.png'). convert_alpha(), groups = self.all_sprites, z = LAYERS['ground'])
         self.player = Player((640, 360), self.all_sprites)

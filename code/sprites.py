@@ -30,3 +30,7 @@ class Water(General):
 class WildFlowers(General):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
+
+class Tree(General):
+    def __init__(self, pos, surf, groups, name):
+        super().__init__(pos, surf, groups)
